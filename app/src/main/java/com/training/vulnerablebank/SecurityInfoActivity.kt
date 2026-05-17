@@ -55,7 +55,8 @@ private fun SecurityInfoScreen(onBackToDashboard: () -> Unit) {
         ScreenHeader(
             title = stringResource(R.string.security_info_heading),
             showBackButton = true,
-            onBackClick = onBackToDashboard
+            onBackClick = onBackToDashboard,
+            titleContentDescription = "security_info_heading"
         )
         Card(
             modifier = Modifier.fillMaxWidth(),

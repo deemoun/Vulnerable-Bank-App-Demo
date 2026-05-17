@@ -59,7 +59,8 @@ private fun HiddenFeatureScreen(
         ScreenHeader(
             title = stringResource(R.string.hidden_feature_message),
             showBackButton = true,
-            onBackClick = onBackToDashboard
+            onBackClick = onBackToDashboard,
+            titleContentDescription = "hidden_feature_heading"
         )
         Button(
             onClick = onGoToDashboard,
