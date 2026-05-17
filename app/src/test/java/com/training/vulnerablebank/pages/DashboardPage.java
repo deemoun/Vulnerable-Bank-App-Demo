@@ -21,12 +21,30 @@ public class DashboardPage extends BasePage {
         click(makeTransferButton);
     }
 
+    public boolean isTransferButtonVisible() {
+        return isElementVisible(makeTransferButton, 5);
+    }
+
     public void openTransactions(){
         click(viewTransactionsButton);
     }
 
+    public boolean isTransactionsButtonVisible() {
+        return isElementVisible(viewTransactionsButton, 5);
+    }
+
     public void openSettings(){
         click(settingsButton);
+    }
+
+    public boolean isSettingsButtonVisible() {
+        return isElementVisible(settingsButton, 5);
+    }
+
+    public void assertPrimaryActionsVisible() {
+        findVisible(makeTransferButton);
+        findVisible(viewTransactionsButton);
+        findVisible(settingsButton);
     }
 
 }
