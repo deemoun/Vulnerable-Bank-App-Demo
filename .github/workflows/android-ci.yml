@@ -21,7 +21,25 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run static checks and unit tests (no emulator)
-        run: ./gradlew --no-daemon clean lint testDebugUnitTest
+        run: ./gradlew --no-daemon --console=plain --info clean lint testDebugUnitTest
+
+      - name: Publish unit test summary
+        if: always()
+        uses: mikepenz/action-junit-report@v4
+        with:
+          report_paths: 'app/build/test-results/testDebugUnitTest/*.xml'
+          check_name: Unit Test Results (Debug)
+          detailed_summary: true
+          fail_on_failure: true
+
+      - name: Upload unit test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-reports
+          path: |
+            app/build/reports/tests/testDebugUnitTest
+            app/build/test-results/testDebugUnitTest
 
       - name: Build debug APK
         run: ./gradlew --no-daemon assembleDebug
