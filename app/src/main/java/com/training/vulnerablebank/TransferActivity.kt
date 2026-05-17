@@ -89,7 +89,7 @@ class TransferActivity : BaseLocalizedActivity() {
 @Composable
 private fun TransferScreen(
     onBackToDashboard: () -> Unit,
-    onSubmit: (String, String) -> Unit
+    onSubmit: (String, String) -> String
 ) {
     var recipient by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
