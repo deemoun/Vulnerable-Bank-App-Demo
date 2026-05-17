@@ -8,8 +8,11 @@ import com.training.vulnerablebank.pages.TransferPage;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assumptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.time.Duration;
 
@@ -33,6 +36,8 @@ public class TestBase {
 
     @BeforeEach
     public void setUp() throws Exception {
+        Assumptions.assumeTrue(isAppiumAvailable(), "Appium server is not available; skipping UI integration tests.");
+
         UiAutomator2Options options = createOptions();
 
         driver = new AndroidDriver(new URL(APPIUM_SERVER_URL), options);
@@ -56,6 +61,15 @@ public class TestBase {
         } catch (Exception ignored) {
         } finally {
             driver.quit();
+        }
+    }
+
+    private static boolean isAppiumAvailable() {
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress("127.0.0.1", 4723), 1000);
+            return true;
+        } catch (Exception ignored) {
+            return false;
         }
     }
 
