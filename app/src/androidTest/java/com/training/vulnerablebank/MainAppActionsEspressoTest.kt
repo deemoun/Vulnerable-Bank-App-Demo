@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import org.junit.Rule
 import org.junit.Test
 
@@ -40,6 +41,65 @@ class MainAppActionsEspressoTest {
 
         composeTestRule
             .onNodeWithContentDescription("submit_transfer_button", useUnmergedTree = true)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun loginAndMakeTransfer() {
+        ensureLoggedInAndOnDashboard()
+
+        composeTestRule
+            .onNodeWithContentDescription("make_transfer_button", useUnmergedTree = true)
+            .assertIsDisplayed()
+            .performClick()
+
+        composeTestRule
+            .onNodeWithContentDescription("recipientField", useUnmergedTree = true)
+            .assertIsDisplayed()
+            .performTextInput("Lisa")
+
+        composeTestRule
+            .onNodeWithContentDescription("amountField", useUnmergedTree = true)
+            .assertIsDisplayed()
+            .performTextInput("100")
+
+        composeTestRule
+            .onNodeWithContentDescription("submit_transfer_button", useUnmergedTree = true)
+            .assertIsDisplayed()
+            .performClick()
+
+        composeTestRule
+            .onNodeWithContentDescription("transfer_status_message", useUnmergedTree = true)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText("Transfer completed", substring = true, ignoreCase = true)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun loginAndOpenSettings() {
+        ensureLoggedInAndOnDashboard()
+
+        composeTestRule
+            .onNodeWithContentDescription("settings_button", useUnmergedTree = true)
+            .assertIsDisplayed()
+            .performClick()
+
+        composeTestRule
+            .onNodeWithContentDescription("settings_heading", useUnmergedTree = true)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithContentDescription("clear_all_data_button", useUnmergedTree = true)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithContentDescription("network_connection_test_button", useUnmergedTree = true)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithContentDescription("logout_button", useUnmergedTree = true)
             .assertIsDisplayed()
     }
 
