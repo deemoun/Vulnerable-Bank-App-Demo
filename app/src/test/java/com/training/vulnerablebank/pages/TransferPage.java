@@ -12,8 +12,7 @@ public class TransferPage extends BasePage {
     private final By amountField = AppiumBy.accessibilityId("amountField");
     private final By submitButton = AppiumBy.accessibilityId("submit_transfer_button");
 
-    private final By transferSuccessToast = By.xpath(
-            "//android.widget.Toast[@text='Transfer completed' or @text='Перевод выполнен']");
+    private final By transferStatusMessage = AppiumBy.accessibilityId("transfer_status_message");
 
     public TransferPage(AndroidDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -36,6 +35,6 @@ public class TransferPage extends BasePage {
     }
 
     public String getTransferSuccessToastText() {
-        return findPresent(transferSuccessToast).getText();
+        return findVisible(transferStatusMessage).getText();
     }
 }
