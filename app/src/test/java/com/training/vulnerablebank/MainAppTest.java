@@ -1,5 +1,6 @@
 package com.training.vulnerablebank;
 import static com.training.vulnerablebank.utils.TestAssertions.assertTextEqualsAny;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Disabled;
