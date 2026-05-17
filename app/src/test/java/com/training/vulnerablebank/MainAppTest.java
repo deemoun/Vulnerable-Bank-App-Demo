@@ -1,5 +1,6 @@
 package com.training.vulnerablebank;
 import static com.training.vulnerablebank.utils.TestAssertions.assertTextEqualsAny;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,9 @@ public class MainAppTest extends TestBase {
     @Test
     public void loginAndOpenTransactions() {
         loginPage.loginAndWaitForDashboard();
+        assertTrue(dashboardPage.isTransactionsButtonVisible());
         dashboardPage.openTransactions();
+        assertTrue(transactionsPage.isBackToDashboardButtonVisible());
         assertTextEqualsAny(
                 transactionsPage.getScreenHeadingText(),
                 "Recent Transactions",
@@ -26,6 +29,7 @@ public class MainAppTest extends TestBase {
     @ValueSource(strings = {"50.0", "100.0", "500.0"})
     public void loginAndMakeTransferWithDifferentAmounts(String amount) {
         loginPage.loginAndWaitForDashboard();
+        assertTrue(dashboardPage.isTransferButtonVisible());
 
         dashboardPage.clickTransferButton();
 
@@ -44,6 +48,7 @@ public class MainAppTest extends TestBase {
     @Test
     public void loginAndMakeTransfer() {
         loginPage.loginAndWaitForDashboard();
+        assertTrue(dashboardPage.isTransferButtonVisible());
         dashboardPage.clickTransferButton();
         transferPage.enterLisaTextInRecipientField();
         transferPage.enterAmountTextInAmountField();
@@ -59,7 +64,12 @@ public class MainAppTest extends TestBase {
     @Test
     public void loginAndOpenSettings(){
         loginPage.loginAndWaitForDashboard();
+        assertTrue(dashboardPage.isSettingsButtonVisible());
         dashboardPage.openSettings();
+        assertTrue(settingsPage.isBackToDashboardButtonVisible());
+        assertTrue(settingsPage.isClearAllDataButtonVisible());
+        assertTrue(settingsPage.isNetworkConnectionTestButtonVisible());
+        assertTrue(settingsPage.isLogoutButtonVisible());
         assertTextEqualsAny(
                 settingsPage.getScreenHeadingText(),
                 "Settings",
