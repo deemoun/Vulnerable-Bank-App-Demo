@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,6 +22,7 @@ fun ScreenHeader(
     title: String,
     showBackButton: Boolean,
     onBackClick: () -> Unit,
+    titleContentDescription: String,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -36,6 +39,7 @@ fun ScreenHeader(
         }
         Text(
             text = title,
+            modifier = Modifier.semantics { contentDescription = titleContentDescription },
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )

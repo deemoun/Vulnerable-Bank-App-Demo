@@ -25,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -58,7 +57,7 @@ class TransferActivity : BaseLocalizedActivity() {
         }
     }
 
-    private fun submitTransfer(preferencesManager: PreferencesManager, recipient: String, amount: String) {
+    private fun submitTransfer(preferencesManager: PreferencesManager, recipient: String, amount: String): String {
         val parsedAmount = amount.toDoubleOrNull()
         val sender = preferencesManager.getStoredUsername().ifBlank { "admin" }
 
@@ -83,6 +82,7 @@ class TransferActivity : BaseLocalizedActivity() {
         }
 
         Toast.makeText(this, resultMessage, Toast.LENGTH_LONG).show()
+        return resultMessage
     }
 }
 
@@ -93,6 +93,7 @@ private fun TransferScreen(
 ) {
     var recipient by rememberSaveable { mutableStateOf("") }
     var amount by rememberSaveable { mutableStateOf("") }
+    var transferStatusMessage by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -104,7 +105,8 @@ private fun TransferScreen(
         ScreenHeader(
             title = stringResource(R.string.transfer_heading),
             showBackButton = true,
-            onBackClick = onBackToDashboard
+            onBackClick = onBackToDashboard,
+            titleContentDescription = "transfer_heading"
         )
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -144,12 +146,19 @@ private fun TransferScreen(
                     style = MaterialTheme.typography.bodySmall
                 )
                 Button(
-                    onClick = { onSubmit(recipient, amount) },
+                    onClick = { transferStatusMessage = onSubmit(recipient, amount) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .semantics { contentDescription = "submit_transfer_button" }
                 ) {
                     Text(text = stringResource(R.string.submit_transfer_button))
+                }
+                if (transferStatusMessage.isNotBlank()) {
+                    Text(
+                        text = transferStatusMessage,
+                        modifier = Modifier.semantics { contentDescription = "transfer_status_message" },
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
         }

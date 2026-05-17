@@ -7,19 +7,13 @@ import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 
 public class SettingsPage extends BasePage {
-    private final By screenHeading = By.xpath(
-            "//*[@text='Settings' or @text='Настройки']");
+    private final By screenHeading = AppiumBy.accessibilityId("settings_heading");
     private final By backToDashboardButton = AppiumBy.accessibilityId("Back to Dashboard");
-    private final By clearAllDataButton = By.xpath(
-            "//*[@text='Clear All Data' or @text='Удалить все данные']");
-    private final By networkConnectionTestButton = By.xpath(
-            "//*[@text='Network Connection Test' or @text='Проверка сети']");
-    private final By logoutButton = By.xpath(
-            "//*[@text='Logout' or @text='Выход']");
-    private final By russianLanguageButton = By.xpath(
-            "//*[@text='Русский']");
-    private final By englishLanguageButton = By.xpath(
-            "//*[@text='English']");
+    private final By clearAllDataButton = AppiumBy.accessibilityId("clear_all_data_button");
+    private final By networkConnectionTestButton = AppiumBy.accessibilityId("network_connection_test_button");
+    private final By logoutButton = AppiumBy.accessibilityId("logout_button");
+    private final By russianLanguageButton = AppiumBy.accessibilityId("language_russian_button");
+    private final By englishLanguageButton = AppiumBy.accessibilityId("language_english_button");
 
     public SettingsPage(AndroidDriver driver, WebDriverWait wait) {
         super(driver, wait);

@@ -24,6 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.training.vulnerablebank.ui.theme.VulnerableBankAppTheme
 import com.training.vulnerablebank.ui.components.ScreenHeader
@@ -103,13 +105,14 @@ private fun SettingsScreen(onBackToDashboard: () -> Unit, onClearAllData: () -> 
         ScreenHeader(
             title = stringResource(R.string.settings_button),
             showBackButton = true,
-            onBackClick = onBackToDashboard
+            onBackClick = onBackToDashboard,
+            titleContentDescription = "settings_heading"
         )
         Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
             Column(modifier = Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Button(onClick = onClearAllData, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.clear_all_data_button)) }
-                Button(onClick = onNetworkConnectionTest, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.network_connection_test_button)) }
-                Button(onClick = onLogout, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.logout_button)) }
+                Button(onClick = onClearAllData, modifier = Modifier.fillMaxWidth().semantics { contentDescription = "clear_all_data_button" }) { Text(stringResource(R.string.clear_all_data_button)) }
+                Button(onClick = onNetworkConnectionTest, modifier = Modifier.fillMaxWidth().semantics { contentDescription = "network_connection_test_button" }) { Text(stringResource(R.string.network_connection_test_button)) }
+                Button(onClick = onLogout, modifier = Modifier.fillMaxWidth().semantics { contentDescription = "logout_button" }) { Text(stringResource(R.string.logout_button)) }
             }
         }
         Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
@@ -118,11 +121,11 @@ private fun SettingsScreen(onBackToDashboard: () -> Unit, onClearAllData: () -> 
                 Button(onClick = {
                     activeLanguageTag = "ru"
                     onLanguageSelected("ru")
-                }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.language_russian)) }
+                }, modifier = Modifier.fillMaxWidth().semantics { contentDescription = "language_russian_button" }) { Text(stringResource(R.string.language_russian)) }
                 Button(onClick = {
                     activeLanguageTag = "en"
                     onLanguageSelected("en")
-                }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.language_english_default)) }
+                }, modifier = Modifier.fillMaxWidth().semantics { contentDescription = "language_english_button" }) { Text(stringResource(R.string.language_english_default)) }
                 Text(text = stringResource(R.string.language_current, activeLanguageTag.uppercase()))
             }
         }

@@ -8,8 +8,7 @@ import io.appium.java_client.android.AndroidDriver;
 
 public class TransactionsPage extends BasePage {
 
-    private final By screenHeading = By.xpath(
-            "//*[@text='Recent Transactions' or @text='Последние транзакции']");
+    private final By screenHeading = AppiumBy.accessibilityId("transactions_heading");
     private final By backToDashboardButton = AppiumBy.accessibilityId("Back to Dashboard");
 
     public TransactionsPage(AndroidDriver driver, WebDriverWait wait) {

@@ -75,7 +75,8 @@ private fun TransactionsScreen(
         ScreenHeader(
             title = stringResource(R.string.transactions_heading),
             showBackButton = true,
-            onBackClick = onBackToDashboard
+            onBackClick = onBackToDashboard,
+            titleContentDescription = "transactions_heading"
         )
         if (transactions.isEmpty()) {
             Text(
