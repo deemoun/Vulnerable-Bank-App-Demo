@@ -87,7 +87,8 @@ private fun DashboardScreen(
             ScreenHeader(
                 title = stringResource(R.string.dashboard_heading),
                 showBackButton = false,
-                onBackClick = {}
+                onBackClick = {},
+                titleContentDescription = "dashboard_heading"
             )
             Card(
                 modifier = Modifier.fillMaxWidth(),
