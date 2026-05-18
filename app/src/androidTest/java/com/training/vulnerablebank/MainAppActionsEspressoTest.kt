@@ -56,7 +56,7 @@ class MainAppActionsEspressoTest {
         composeTestRule
             .onNodeWithContentDescription("recipientField", useUnmergedTree = true)
             .assertIsDisplayed()
-            .performTextInput("Lisa")
+            .performTextInput("lisa")
 
         composeTestRule
             .onNodeWithContentDescription("amountField", useUnmergedTree = true)
