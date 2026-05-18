@@ -121,6 +121,32 @@ public class MainAppTest extends TestBase {
         assertTrue(dashboardPage.isTransferButtonVisible());
     }
 
+
+    @DisplayName("Admin переводит 100$ пользователю lisa, и lisa видит 100$ на счете")
+    @Test
+    public void adminTransfer100ToLisaAndCheckLisaBalance() {
+        loginPage.loginAsAdminAndWaitForDashboard();
+        assertTrue(dashboardPage.getBalanceAmountText().contains("1,000")
+                || dashboardPage.getBalanceAmountText().contains("1000"));
+
+        dashboardPage.clickTransferButton();
+        transferPage.enterLisaTextInRecipientField();
+        transferPage.enterAmount("100");
+        transferPage.clickSubmitTransferButton();
+        assertTextEqualsAny(
+                transferPage.getTransferSuccessToastText(),
+                "Transfer completed",
+                "Перевод выполнен"
+        );
+
+        driver.navigate().back();
+        dashboardPage.openSettings();
+        settingsPage.clickLogoutButton();
+
+        loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
+        assertTrue(dashboardPage.getBalanceAmountText().contains("100"));
+    }
+
     @DisplayName("Пользователь lisa может войти в приложение")
     @Test
     public void loginAsLisaAndOpenDashboard() {

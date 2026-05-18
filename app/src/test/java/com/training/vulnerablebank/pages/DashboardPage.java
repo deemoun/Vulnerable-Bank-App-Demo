@@ -13,6 +13,8 @@ public class DashboardPage extends BasePage {
     private final By viewTransactionsButton = AppiumBy.accessibilityId("view_transactions_button");
     private final By settingsButton = AppiumBy.accessibilityId("settings_button");
 
+    private final By balanceAmountText = By.xpath("//android.widget.TextView[contains(@text, '$')]");
+
     public DashboardPage(AndroidDriver driver, WebDriverWait wait) {
         super(driver, wait);
     }
@@ -39,6 +41,11 @@ public class DashboardPage extends BasePage {
 
     public boolean isSettingsButtonVisible() {
         return isElementVisible(settingsButton, 5);
+    }
+
+
+    public String getBalanceAmountText() {
+        return findVisible(balanceAmountText).getText();
     }
 
     public void assertPrimaryActionsVisible() {
