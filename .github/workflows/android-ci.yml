@@ -3,7 +3,7 @@ name: Android CI (No Emulator)
 on:
   workflow_dispatch:
 jobs:
-  build-and-test:
+  test-without-emulator:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Run static checks and unit tests (no emulator)
+      - name: Run static checks and unit tests (without emulator)
         run: ./gradlew --no-daemon --console=plain --info clean lint testDebugUnitTest
 
       - name: Publish unit test summary
