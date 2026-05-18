@@ -8,7 +8,6 @@ import com.training.vulnerablebank.pages.TransferPage;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Assumptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.InetSocketAddress;
@@ -36,7 +35,9 @@ public class TestBase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Assumptions.assumeTrue(isAppiumAvailable(), "Appium server is not available; skipping UI integration tests.");
+        if (!isAppiumAvailable()) {
+            throw new IllegalStateException("Appium server is not available at http://127.0.0.1:4723. Start Appium before running tests.");
+        }
 
         UiAutomator2Options options = createOptions();
 
