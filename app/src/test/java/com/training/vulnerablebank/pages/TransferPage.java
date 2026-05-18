@@ -13,6 +13,7 @@ public class TransferPage extends BasePage {
     private final By submitButton = AppiumBy.accessibilityId("submit_transfer_button");
 
     private final By transferStatusMessage = AppiumBy.accessibilityId("transfer_status_message");
+    private final By backToDashboardButton = AppiumBy.accessibilityId("Back to Dashboard");
 
     public TransferPage(AndroidDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -37,4 +38,9 @@ public class TransferPage extends BasePage {
     public String getTransferSuccessToastText() {
         return findVisible(transferStatusMessage).getText();
     }
+
+    public void clickBackToDashboardButton() {
+        click(backToDashboardButton);
+    }
 }
+

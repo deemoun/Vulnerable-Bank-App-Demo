@@ -139,7 +139,7 @@ public class MainAppTest extends TestBase {
                 "Перевод выполнен"
         );
 
-        driver.navigate().back();
+        transferPage.clickBackToDashboardButton();
         dashboardPage.openSettings();
         settingsPage.clickLogoutButton();
 
