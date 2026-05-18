@@ -50,6 +50,20 @@ class MainAppActionsEspressoTest {
     }
 
     @Test
+    fun loginAsLisaAndOpenTransactions() {
+        ensureLoggedInAndOnDashboard(username = "lisa", password = "password123")
+
+        composeTestRule
+            .onNodeWithContentDescription("view_transactions_button", useUnmergedTree = true)
+            .assertIsDisplayed()
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText("Recent Transactions", substring = true, ignoreCase = true)
+            .assertIsDisplayed()
+    }
+
+    @Test
     fun loginAndOpenTransfer() {
         ensureLoggedInAndOnDashboard()
 
@@ -122,13 +136,23 @@ class MainAppActionsEspressoTest {
             .assertIsDisplayed()
     }
 
-    private fun ensureLoggedInAndOnDashboard() {
+    private fun ensureLoggedInAndOnDashboard(username: String = "admin", password: String = "password123") {
         val loginButton = composeTestRule.onAllNodesWithContentDescription(
             label = "login_button",
             useUnmergedTree = true
         )
 
         if (loginButton.fetchSemanticsNodes().isNotEmpty()) {
+            composeTestRule
+                .onNodeWithContentDescription("username_field", useUnmergedTree = true)
+                .assertIsDisplayed()
+                .performTextInput(username)
+
+            composeTestRule
+                .onNodeWithContentDescription("password_field", useUnmergedTree = true)
+                .assertIsDisplayed()
+                .performTextInput(password)
+
             loginButton.onFirst().performClick()
         }
 

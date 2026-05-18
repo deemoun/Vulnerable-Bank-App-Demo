@@ -8,6 +8,8 @@ import io.appium.java_client.android.AndroidDriver;
 
 public class LoginPage extends BasePage {
 
+    private final By usernameField = AppiumBy.accessibilityId("username_field");
+    private final By passwordField = AppiumBy.accessibilityId("password_field");
     private final By loginButton = AppiumBy.accessibilityId("login_button");
     private final By dashboardButton = AppiumBy.accessibilityId("view_transactions_button");
 
@@ -16,12 +18,16 @@ public class LoginPage extends BasePage {
     }
 
     public void loginAndWaitForDashboard() {
+        loginAndWaitForDashboard("admin", "password123");
+    }
+
+    public void loginAndWaitForDashboard(String username, String password) {
         if (isElementVisible(dashboardButton, 2)) {
             return;
         }
 
         if (isElementVisible(loginButton, 2)) {
-            click(loginButton);
+            performLogin(username, password);
             findVisible(dashboardButton);
             return;
         }
@@ -33,11 +39,17 @@ public class LoginPage extends BasePage {
         }
 
         if (isElementVisible(loginButton, 2)) {
-            click(loginButton);
+            performLogin(username, password);
             findVisible(dashboardButton);
             return;
         }
 
         throw new IllegalStateException("Не удалось попасть на Login или Dashboard screen");
+    }
+
+    private void performLogin(String username, String password) {
+        enterText(usernameField, username);
+        enterText(passwordField, password);
+        click(loginButton);
     }
 }
