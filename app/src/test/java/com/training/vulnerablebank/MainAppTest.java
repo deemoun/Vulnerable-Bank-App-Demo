@@ -153,4 +153,11 @@ public class MainAppTest extends TestBase {
         loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
         assertTrue(dashboardPage.isTransactionsButtonVisible());
     }
+
+    @DisplayName("Пользователь john может войти и видеть баланс 500$")
+    @Test
+    public void loginAsJohnAndCheckBalance() {
+        loginPage.loginAsUserAndWaitForDashboard("john", "testing123");
+        assertTrue(dashboardPage.getBalanceAmountText().contains("500"));
+    }
 }
