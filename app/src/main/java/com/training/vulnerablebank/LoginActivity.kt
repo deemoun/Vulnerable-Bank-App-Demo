@@ -88,8 +88,8 @@ private fun LoginScreen(
     isRootDetected: Boolean,
     onLogin: (String, String) -> Unit,
 ) {
-    var username by rememberSaveable { mutableStateOf(SecurityVulnerabilities.HARDCODED_USERNAME) }
-    var password by rememberSaveable { mutableStateOf(SecurityVulnerabilities.HARDCODED_PASSWORD) }
+    var username by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -135,13 +135,17 @@ private fun LoginScreen(
                         value = username,
                         onValueChange = { username = it },
                         label = { Text(stringResource(R.string.username_label)) },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .semantics { contentDescription = "username_field" }
                     )
                     OutlinedTextField(
                         value = password,
                         onValueChange = { password = it },
                         label = { Text(stringResource(R.string.password_label)) },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .semantics { contentDescription = "password_field" },
                         visualTransformation = PasswordVisualTransformation()
                     )
                     Row(
