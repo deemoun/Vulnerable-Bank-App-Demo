@@ -1,6 +1,7 @@
 package com.training.vulnerablebank;
 
 import static com.training.vulnerablebank.utils.TestAssertions.assertTextEqualsAny;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +23,27 @@ public class MainAppTest extends TestBase {
                 "Recent Transactions",
                 "Последние транзакции"
         );
+    }
+
+    @DisplayName("Пользователь может сделать перевод пользователю lisa")
+    @Test
+    public void loginAndTransferToLisa() {
+        loginPage.loginAndWaitForDashboard();
+        assertTrue(dashboardPage.isTransferButtonVisible());
+
+        dashboardPage.clickTransferButton();
+        transferPage.enterLisaTextInRecipientField();
+        transferPage.enterAmountTextInAmountField();
+        transferPage.clickSubmitTransferButton();
+
+        assertTextEqualsAny(
+                transferPage.getTransferSuccessToastText(),
+                "Transfer completed",
+                "Перевод выполнен"
+        );
+
+        // Existing locators allow entering recipient text, but there is no dedicated locator to verify
+        // the recipient value in the field after input. Validation is based on transfer success message.
     }
 
     @ParameterizedTest
@@ -59,6 +81,19 @@ public class MainAppTest extends TestBase {
         );
     }
 
+    @DisplayName("Пользователь может переключить язык на русский")
+    @Test
+    public void switchLanguageToRussianFromSettings() {
+        loginPage.loginAndWaitForDashboard();
+        dashboardPage.openSettings();
+
+        assertTrue(settingsPage.isRussianLanguageButtonVisible());
+        settingsPage.clickRussianLanguageButton();
+
+        assertEquals("Настройки", settingsPage.getScreenHeadingText());
+        assertEquals("Английский", settingsPage.getEnglishLanguageButtonText());
+    }
+
     @DisplayName("Пользователь может открыть настройки")
     @Test
     public void loginAndOpenSettings(){
@@ -74,5 +109,19 @@ public class MainAppTest extends TestBase {
                 "Settings",
                 "Настройки"
         );
+    }
+
+    @DisplayName("Пользователь может выйти и снова войти")
+    @Test
+    public void logoutAndLoginAgain() {
+        loginPage.loginAndWaitForDashboard();
+        dashboardPage.openSettings();
+        settingsPage.clickLogoutButton();
+
+        loginPage.loginAndWaitForDashboard();
+        assertTrue(dashboardPage.isTransferButtonVisible());
+
+        // Existing locators do not expose a dedicated login-screen heading,
+        // so successful relogin is verified by dashboard visibility.
     }
 }
