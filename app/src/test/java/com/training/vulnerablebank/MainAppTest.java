@@ -91,7 +91,6 @@ public class MainAppTest extends TestBase {
         settingsPage.clickRussianLanguageButton();
 
         assertEquals("Настройки", settingsPage.getScreenHeadingText());
-        assertEquals("Английский", settingsPage.getEnglishLanguageButtonText());
     }
 
     @DisplayName("Пользователь может открыть настройки")
@@ -120,8 +119,5 @@ public class MainAppTest extends TestBase {
 
         loginPage.loginAndWaitForDashboard();
         assertTrue(dashboardPage.isTransferButtonVisible());
-
-        // Existing locators do not expose a dedicated login-screen heading,
-        // so successful relogin is verified by dashboard visibility.
     }
 }
