@@ -25,6 +25,7 @@ class PreferencesManager(context: Context) {
             .put("admin", 1000.0)
             .put("nick", 0.0)
             .put("lisa", 0.0)
+            .put("john", 500.0)
         preferences.edit()
             .putString(KEY_USER_BALANCES, balances.toString())
             .putString(KEY_TRANSACTIONS, JSONArray().toString())
