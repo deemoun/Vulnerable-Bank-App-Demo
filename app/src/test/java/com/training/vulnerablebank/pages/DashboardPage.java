@@ -13,7 +13,7 @@ public class DashboardPage extends BasePage {
     private final By viewTransactionsButton = AppiumBy.accessibilityId("view_transactions_button");
     private final By settingsButton = AppiumBy.accessibilityId("settings_button");
 
-    private final By balanceAmountText = By.xpath("//android.widget.TextView[contains(@text, '$')]");
+    private final By balanceAmountText = AppiumBy.accessibilityId("balance_amount_text");
 
     public DashboardPage(AndroidDriver driver, WebDriverWait wait) {
         super(driver, wait);
