@@ -41,6 +41,12 @@ android {
 
     testOptions {
         animationsDisabled = true
+        unitTests.all {
+            it.useJUnitPlatform {
+                includeTags("appium")
+            }
+            it.systemProperty("allure.results.directory", layout.buildDirectory.dir("allure-results").get().asFile.absolutePath)
+        }
         managedDevices {
             localDevices {
                 create("headlessApi36") {
@@ -77,12 +83,19 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     testImplementation(libs.appium.java.client)
     testImplementation(libs.selenium.java)
+    testImplementation(libs.allure.junit5)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.register("appiumTest") {
+    group = "verification"
+    description = "Runs Appium UI tests with Allure reporting enabled."
+    dependsOn("test")
 }
 
 tasks.register("headlessPreferencesManagerInstrumentedTest") {

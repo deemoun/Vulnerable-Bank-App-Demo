@@ -4,10 +4,12 @@ import static com.training.vulnerablebank.utils.TestAssertions.assertTextEqualsA
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@Tag("appium")
 public class MainAppTest extends TestBase {
 
     @DisplayName("Пользователь может войти в приложение")

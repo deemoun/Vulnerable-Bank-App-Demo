@@ -14,6 +14,7 @@ robolectric = "4.14.1"
 coreKtxVersion = "1.6.1"
 appiumJavaClient = "9.3.0"
 selenium = "4.24.0"
+allure = "2.29.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,8 +37,8 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 appium-java-client = { group = "io.appium", name = "java-client", version.ref = "appiumJavaClient" }
 selenium-java = { group = "org.seleniumhq.selenium", name = "selenium-java", version.ref = "selenium" }
+allure-junit5 = { group = "io.qameta.allure", name = "allure-junit5", version.ref = "allure" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
