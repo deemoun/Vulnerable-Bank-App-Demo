@@ -111,7 +111,8 @@ private fun DashboardScreen(
                     Text(
                         text = currencyFormatter.format(balance),
                         style = MaterialTheme.typography.displaySmall,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.semantics { contentDescription = "balance_amount_text" }
                     )
                 }
             }
