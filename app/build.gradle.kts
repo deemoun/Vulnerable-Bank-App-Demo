@@ -19,6 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["class"] = "com.training.vulnerablebank.PreferencesManagerInstrumentedTest"
     }
 
     buildTypes {
@@ -36,6 +37,19 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+
+    testOptions {
+        animationsDisabled = true
+        managedDevices {
+            localDevices {
+                create("headlessApi36") {
+                    device = "Pixel 6"
+                    apiLevel = 36
+                    systemImageSource = "aosp"
+                }
+            }
+        }
     }
 }
 
@@ -69,4 +83,10 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.register("headlessPreferencesManagerInstrumentedTest") {
+    group = "verification"
+    description = "Runs PreferencesManagerInstrumentedTest on a headless Gradle Managed Device."
+    dependsOn("headlessApi36DebugAndroidTest")
 }
