@@ -1,20 +1,39 @@
 package com.training.vulnerablebank
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.test.core.app.ActivityScenario
+import androidx.test.platform.app.InstrumentationRegistry
+import com.training.vulnerablebank.utils.PreferencesManager
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class MainAppActionsEspressoTest {
 
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<LoginActivity>()
+    val composeTestRule = createEmptyComposeRule()
+
+    private lateinit var scenario: ActivityScenario<LoginActivity>
+
+    @Before
+    fun launchApp() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        PreferencesManager(context).resetToInitialState()
+        scenario = ActivityScenario.launch(LoginActivity::class.java)
+    }
+
+    @After
+    fun closeApp() {
+        scenario.close()
+    }
 
     @Test
     fun loginAndOpenTransactions() {
