@@ -41,9 +41,6 @@ public class MainAppTest extends TestBase {
                 "Transfer completed",
                 "Перевод выполнен"
         );
-
-        // Existing locators allow entering recipient text, but there is no dedicated locator to verify
-        // the recipient value in the field after input. Validation is based on transfer success message.
     }
 
     @ParameterizedTest
