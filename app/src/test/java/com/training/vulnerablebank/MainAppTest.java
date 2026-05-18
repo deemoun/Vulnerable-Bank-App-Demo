@@ -14,7 +14,7 @@ public class MainAppTest extends TestBase {
     @DisplayName("Пользователь может войти в приложение")
     @Test
     public void loginAndOpenTransactions() {
-        loginPage.loginAndWaitForDashboard();
+        loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.isTransactionsButtonVisible());
         dashboardPage.openTransactions();
         assertTrue(transactionsPage.isBackToDashboardButtonVisible());
@@ -28,7 +28,7 @@ public class MainAppTest extends TestBase {
     @DisplayName("Пользователь может сделать перевод пользователю lisa")
     @Test
     public void loginAndTransferToLisa() {
-        loginPage.loginAndWaitForDashboard();
+        loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.isTransferButtonVisible());
 
         dashboardPage.clickTransferButton();
@@ -49,7 +49,7 @@ public class MainAppTest extends TestBase {
     @ParameterizedTest
     @ValueSource(strings = {"50.0", "100.0", "500.0"})
     public void loginAndMakeTransferWithDifferentAmounts(String amount) {
-        loginPage.loginAndWaitForDashboard();
+        loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.isTransferButtonVisible());
 
         dashboardPage.clickTransferButton();
@@ -68,7 +68,7 @@ public class MainAppTest extends TestBase {
     @DisplayName("Пользователь может сделать перевод")
     @Test
     public void loginAndMakeTransfer() {
-        loginPage.loginAndWaitForDashboard();
+        loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.isTransferButtonVisible());
         dashboardPage.clickTransferButton();
         transferPage.enterLisaTextInRecipientField();
@@ -84,7 +84,7 @@ public class MainAppTest extends TestBase {
     @DisplayName("Пользователь может переключить язык на русский")
     @Test
     public void switchLanguageToRussianFromSettings() {
-        loginPage.loginAndWaitForDashboard();
+        loginPage.loginAsAdminAndWaitForDashboard();
         dashboardPage.openSettings();
 
         assertTrue(settingsPage.isRussianLanguageButtonVisible());
@@ -96,7 +96,7 @@ public class MainAppTest extends TestBase {
     @DisplayName("Пользователь может открыть настройки")
     @Test
     public void loginAndOpenSettings(){
-        loginPage.loginAndWaitForDashboard();
+        loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.isSettingsButtonVisible());
         dashboardPage.openSettings();
         assertTrue(settingsPage.isBackToDashboardButtonVisible());
@@ -113,11 +113,18 @@ public class MainAppTest extends TestBase {
     @DisplayName("Пользователь может выйти и снова войти")
     @Test
     public void logoutAndLoginAgain() {
-        loginPage.loginAndWaitForDashboard();
+        loginPage.loginAsAdminAndWaitForDashboard();
         dashboardPage.openSettings();
         settingsPage.clickLogoutButton();
 
-        loginPage.loginAndWaitForDashboard();
+        loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.isTransferButtonVisible());
+    }
+
+    @DisplayName("Пользователь lisa может войти в приложение")
+    @Test
+    public void loginAsLisaAndOpenDashboard() {
+        loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
+        assertTrue(dashboardPage.isTransactionsButtonVisible());
     }
 }

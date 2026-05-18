@@ -17,11 +17,11 @@ public class LoginPage extends BasePage {
         super(driver, wait);
     }
 
-    public void loginAndWaitForDashboard() {
-        loginAndWaitForDashboard("admin", "password123");
+    public void loginAsAdminAndWaitForDashboard() {
+        loginAsUserAndWaitForDashboard("admin", "password123");
     }
 
-    public void loginAndWaitForDashboard(String username, String password) {
+    public void loginAsUserAndWaitForDashboard(String username, String password) {
         if (isElementVisible(dashboardButton, 2)) {
             return;
         }
