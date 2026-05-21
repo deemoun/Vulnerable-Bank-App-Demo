@@ -15,3 +15,7 @@
 local.properties
 
 /artifacts/
+
+node_modules/
+allure-report/
+allure-results/
