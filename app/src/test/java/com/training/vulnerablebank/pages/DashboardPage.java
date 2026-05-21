@@ -48,6 +48,7 @@ public class DashboardPage extends BasePage {
         return findVisible(balanceAmountText).getText();
     }
 
+
     public void assertPrimaryActionsVisible() {
         findVisible(makeTransferButton);
         findVisible(viewTransactionsButton);

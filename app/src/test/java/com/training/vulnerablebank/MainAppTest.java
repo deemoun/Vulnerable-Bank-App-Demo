@@ -163,18 +163,20 @@ public class MainAppTest extends TestBase {
     }
 
 
-    @DisplayName("Admin переводит 100$ пользователю lisa, и lisa видит 100$ на счете")
+    @DisplayName("Admin переводит 100$ пользователю lisa, и баланс lisa увеличивается на 100$")
     @Test
     public void adminTransfer100ToLisaAndCheckLisaBalance() {
         loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.getBalanceAmountText().contains("1,000")
-                || dashboardPage.getBalanceAmountText().contains("1000"),
+                        || dashboardPage.getBalanceAmountText().contains("1000"),
                 "У admin перед переводом должен отображаться баланс 1000");
 
         dashboardPage.clickTransferButton();
         transferPage.enterLisaTextInRecipientField();
-        transferPage.enterAmount("100");
+        int transferAmount = 100;
+        transferPage.enterAmount(String.valueOf(transferAmount));
         transferPage.clickSubmitTransferButton();
+
         assertTextEqualsAny(
                 transferPage.getTransferSuccessToastText(),
                 "Transfer completed",
@@ -184,9 +186,12 @@ public class MainAppTest extends TestBase {
         transferPage.clickBackToDashboardButton();
         dashboardPage.openSettings();
         settingsPage.clickLogoutButton();
+        assertTrue(loginPage.isLoginButtonVisible(), "После выхода должна быть видна кнопка входа");
 
         loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
-        assertTrue(dashboardPage.getBalanceAmountText().contains("100"), "У lisa должен отображаться баланс с суммой 100 после перевода");
+        String newBalance = dashboardPage.getBalanceAmountText().replaceAll("[^\\d.]", "");
+        assertEquals(String.valueOf(transferAmount) + ".0", newBalance,
+                "После перевода у lisa должен быть баланс 100.0");
     }
 
     @DisplayName("Пользователь lisa может войти в приложение")
