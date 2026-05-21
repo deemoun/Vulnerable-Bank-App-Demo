@@ -189,9 +189,10 @@ public class MainAppTest extends TestBase {
         assertTrue(loginPage.isLoginButtonVisible(), "После выхода должна быть видна кнопка входа");
 
         loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
-        String newBalance = dashboardPage.getBalanceAmountText().replaceAll("[^\\d.]", "");
-        assertEquals(String.valueOf(transferAmount) + ".0", newBalance,
-                "После перевода у lisa должен быть баланс 100.0");
+        String expectedBalance = "100.0";
+        String actualBalance = dashboardPage.getBalanceAmountText();
+        assertEquals(expectedBalance, actualBalance,
+                "После перевода у lisa должен быть ожидаемый баланс");
     }
 
     @DisplayName("Пользователь lisa может войти в приложение")
