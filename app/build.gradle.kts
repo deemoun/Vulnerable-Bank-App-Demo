@@ -85,6 +85,7 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    systemProperty("allure.results.directory", layout.buildDirectory.dir("allure-results").get().asFile.absolutePath)
 }
 
 tasks.register("headlessPreferencesManagerInstrumentedTest") {
