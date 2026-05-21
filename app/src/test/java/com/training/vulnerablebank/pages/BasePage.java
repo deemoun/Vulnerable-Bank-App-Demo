@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import io.qameta.allure.Step;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 
@@ -22,6 +23,7 @@ public class BasePage {
         this.wait = wait;
     }
 
+    @Step("Tap element: {locator}")
     public void click(By locator) {
         findVisible(locator).click();
     }
@@ -44,6 +46,7 @@ public class BasePage {
         return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
+    @Step("Enter text into element: {locator}")
     public void enterText(By locator, String text) {
         findVisible(locator).click();
         driver.switchTo().activeElement().sendKeys(text);
