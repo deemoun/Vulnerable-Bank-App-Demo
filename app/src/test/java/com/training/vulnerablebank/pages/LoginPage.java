@@ -52,4 +52,8 @@ public class LoginPage extends BasePage {
         enterText(passwordField, password);
         click(loginButton);
     }
+
+    public boolean isLoginButtonVisible(){
+        return isElementVisible(loginButton, 5);
+    }
 }

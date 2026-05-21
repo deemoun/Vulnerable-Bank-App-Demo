@@ -157,4 +157,13 @@ public class MainAppTest extends TestBase {
         loginPage.loginAsUserAndWaitForDashboard("john", "testing123");
         assertTrue(dashboardPage.getBalanceAmountText().contains("500"));
     }
+
+    @DisplayName("Можно очистить данные приложения")
+    @Test
+    public void openSettingsAndChangeLanguage(){
+        loginPage.loginAsAdminAndWaitForDashboard();
+        dashboardPage.openSettings();
+        settingsPage.clickClearAllDataButton();
+        assertTrue(loginPage.isLoginButtonVisible());
+    }
 }
