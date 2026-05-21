@@ -19,3 +19,12 @@ local.properties
 node_modules/
 allure-report/
 allure-results/
+
+# Local IDE/user-specific files
+.idea/androidTestResultsUserPreferences.xml
+.idea/deploymentTargetSelector.xml
+.idea/misc.xml
+
+# Node tooling files used locally
+package.json
+package-lock.json
