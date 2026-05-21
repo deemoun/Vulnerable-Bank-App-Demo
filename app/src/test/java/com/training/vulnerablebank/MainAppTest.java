@@ -206,11 +206,13 @@ public class MainAppTest extends TestBase {
     @Story("Dashboard")
     @Test
     public void adminTransfer100ToLisaAndCheckLisaBalance() {
+        Allure.step("Login as admin and verify initial balance");
         loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.getBalanceAmountText().contains("1,000")
                         || dashboardPage.getBalanceAmountText().contains("1000"),
                 "У admin перед переводом должен отображаться баланс 1000");
 
+        Allure.step("Transfer 100$ from admin to lisa");
         dashboardPage.clickTransferButton();
         transferPage.enterLisaTextInRecipientField();
         int transferAmount = 100;
@@ -223,11 +225,13 @@ public class MainAppTest extends TestBase {
                 "Перевод выполнен"
         );
 
+        Allure.step("Logout admin user");
         transferPage.clickBackToDashboardButton();
         dashboardPage.openSettings();
         settingsPage.clickLogoutButton();
         assertTrue(loginPage.isLoginButtonVisible(), "После выхода должна быть видна кнопка входа");
 
+        Allure.step("Login as lisa and verify updated balance");
         loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
         String expectedBalance = "100.0";
         String actualBalance = dashboardPage.getBalanceAmountText();
