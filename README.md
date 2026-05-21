@@ -36,36 +36,43 @@ From project root:
 - There is no committed `allure.properties` with custom output directory.
 - CI workflows currently publish JUnit/Android reports, but do not generate/publish Allure reports.
 
-### 4.3 Install Allure CLI (required for local HTML report)
-Pick one option:
-- macOS (Homebrew): `brew install allure`
-- Linux (Scoop/Apt/Manual) or Windows: install from official Allure CLI docs/releases and ensure `allure` is in `PATH`.
+### 4.3 Install Allure CLI per-repository (npm, not global)
+Use a local dev dependency so Allure is installed only for this repository.
 
-Check installation:
-- `allure --version`
+From project root (Linux/macOS):
+- `npm install --save-dev allure-commandline`
+- `npx allure --version`
+
+From project root (Windows PowerShell):
+- `npm install --save-dev allure-commandline`
+- `npx allure --version`
+
+Notes:
+- Do **not** use `npm install -g` for this repo setup.
+- `npx allure ...` uses `./node_modules/.bin/allure`, so it is repo-scoped.
 
 ### 4.4 Generate results and HTML report locally
 From project root:
 1. Run tests:
    - `./gradlew clean testDebugUnitTest`
 2. Generate report from JUnit XML folder:
-   - `allure generate app/build/test-results/testDebugUnitTest --clean -o build/allure-report`
+   - `npx allure generate app/build/test-results/testDebugUnitTest --clean -o build/allure-report`
 3. Open report:
-   - `allure open build/allure-report`
+   - `npx allure open build/allure-report`
 
 Alternative one-command preview:
-- `allure serve app/build/test-results/testDebugUnitTest`
+- `npx allure serve app/build/test-results/testDebugUnitTest`
 
 ### 4.5 Optional: cleaner Allure results directory
 If you want classic `allure-results` flow (instead of pointing directly to JUnit XML path), add `allure.properties` and set:
 - `allure.results.directory=build/allure-results`
 
 Then run tests and build report from that folder:
-- `allure generate build/allure-results --clean -o build/allure-report`
+- `npx allure generate build/allure-results --clean -o build/allure-report`
 
 ### 4.6 Troubleshooting
-- If `allure: command not found`:
-  - Allure CLI is not installed or not in `PATH`.
+- If `npx: command not found` or npm errors occur:
+  - Install Node.js (which includes npm) and rerun the repo-local install command.
 - If report is empty:
   - Ensure tests actually executed (`./gradlew testDebugUnitTest`) and files exist under `app/build/test-results/testDebugUnitTest`.
 - If some Appium tests are skipped:
