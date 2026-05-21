@@ -104,6 +104,26 @@ public class MainAppTest extends TestBase {
         );
     }
 
+    @DisplayName("Пользователь не может сделать перевод несуществующему получателю")
+    @Description("Негативная проверка: перевод на несуществующего адресата должен завершиться ошибкой валидации.")
+    @Story("Transfer")
+    @Test
+    public void loginAndFailTransferToUnknownRecipient() {
+        loginPage.loginAsAdminAndWaitForDashboard();
+        assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
+
+        dashboardPage.clickTransferButton();
+        transferPage.enterRecipient("ghost-user");
+        transferPage.enterAmount("50.0");
+        transferPage.clickSubmitTransferButton();
+
+        assertTextEqualsAny(
+                transferPage.getTransferSuccessToastText(),
+                "Recipient not found",
+                "Получатель не найден"
+        );
+    }
+
     @DisplayName("Пользователь может переключить язык на русский")
     @Description("Проверка изменения языка интерфейса в настройках на русский.")
     @Story("Settings")
