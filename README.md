@@ -23,16 +23,53 @@ From project root:
 - Run instrumented tests on connected emulator/device:
   - `./gradlew connectedDebugAndroidTest`
 
-## 4) Run Allure and view results
-Allure is **not wired as a Gradle task** in this repo right now, but you can still view test results with Allure CLI.
+## 4) Allure: full setup and usage
 
+### 4.1 What is already configured in this repo
+- Allure Java adapters are already added for unit tests:
+  - `io.qameta.allure:allure-junit5:2.29.1`
+  - `io.qameta.allure:allure-java-commons:2.29.1`
+- JUnit 5 platform is enabled for `Test` tasks (`useJUnitPlatform()`), so Allure JUnit 5 integration can collect test lifecycle data.
+
+### 4.2 What is **not** configured automatically
+- There is no dedicated Gradle task like `allureReport`/`allureServe` in this repo.
+- There is no committed `allure.properties` with custom output directory.
+- CI workflows currently publish JUnit/Android reports, but do not generate/publish Allure reports.
+
+### 4.3 Install Allure CLI (required for local HTML report)
+Pick one option:
+- macOS (Homebrew): `brew install allure`
+- Linux (Scoop/Apt/Manual) or Windows: install from official Allure CLI docs/releases and ensure `allure` is in `PATH`.
+
+Check installation:
+- `allure --version`
+
+### 4.4 Generate results and HTML report locally
 From project root:
-1. Run tests to produce JUnit XML:
+1. Run tests:
    - `./gradlew clean testDebugUnitTest`
-2. Generate Allure report from test results:
+2. Generate report from JUnit XML folder:
    - `allure generate app/build/test-results/testDebugUnitTest --clean -o build/allure-report`
-3. Open the report:
+3. Open report:
    - `allure open build/allure-report`
+
+Alternative one-command preview:
+- `allure serve app/build/test-results/testDebugUnitTest`
+
+### 4.5 Optional: cleaner Allure results directory
+If you want classic `allure-results` flow (instead of pointing directly to JUnit XML path), add `allure.properties` and set:
+- `allure.results.directory=build/allure-results`
+
+Then run tests and build report from that folder:
+- `allure generate build/allure-results --clean -o build/allure-report`
+
+### 4.6 Troubleshooting
+- If `allure: command not found`:
+  - Allure CLI is not installed or not in `PATH`.
+- If report is empty:
+  - Ensure tests actually executed (`./gradlew testDebugUnitTest`) and files exist under `app/build/test-results/testDebugUnitTest`.
+- If some Appium tests are skipped:
+  - This is expected when Appium server at `http://127.0.0.1:4723` is not running (assumption-based skip in tests).
 
 ## 5) How CI runs
 CI workflows are in `.github/workflows/`:
