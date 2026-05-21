@@ -107,6 +107,34 @@ public class MainAppTest extends TestBase {
         );
     }
 
+
+    @DisplayName("Пользователь может вернуться в дашборд из настроек")
+    @Test
+    public void openSettingsAndReturnToDashboard() {
+        loginPage.loginAsAdminAndWaitForDashboard();
+        dashboardPage.openSettings();
+
+        assertTrue(settingsPage.isBackToDashboardButtonVisible());
+        settingsPage.clickBackToDashboardButton();
+
+        assertTrue(dashboardPage.isTransferButtonVisible());
+    }
+
+    @DisplayName("Пользователь может переключить язык обратно на английский")
+    @Test
+    public void switchLanguageBackToEnglishFromSettings() {
+        loginPage.loginAsAdminAndWaitForDashboard();
+        dashboardPage.openSettings();
+
+        assertTrue(settingsPage.isRussianLanguageButtonVisible());
+        settingsPage.clickRussianLanguageButton();
+        assertEquals("Настройки", settingsPage.getScreenHeadingText());
+
+        assertTrue(settingsPage.isEnglishLanguageButtonVisible());
+        settingsPage.clickEnglishLanguageButton();
+        assertEquals("Settings", settingsPage.getScreenHeadingText());
+    }
+
     @DisplayName("Пользователь может выйти и снова войти")
     @Test
     public void logoutAndLoginAgain() {
