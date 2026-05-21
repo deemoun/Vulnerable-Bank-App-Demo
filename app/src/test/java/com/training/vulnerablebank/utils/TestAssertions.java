@@ -15,6 +15,10 @@ public class TestAssertions {
         boolean textIsCorrect = actualText.equals(expectedText1)
                 || actualText.equals(expectedText2);
 
-        assertTrue(textIsCorrect);
+        assertTrue(
+                textIsCorrect,
+                "Текст не совпал ни с одним ожидаемым значением. actual='" + actualText
+                        + "', expectedAny=['" + expectedText1 + "', '" + expectedText2 + "']"
+        );
     }
 }
