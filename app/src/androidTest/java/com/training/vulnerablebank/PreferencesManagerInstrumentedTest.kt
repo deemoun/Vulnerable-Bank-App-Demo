@@ -24,12 +24,15 @@ class PreferencesManagerInstrumentedTest {
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
         preferencesManager = PreferencesManager(context)
+
+        // Изолируем тесты: всегда стартуем с базовых данных и чистой сессии.
         preferencesManager.resetToInitialState()
         preferencesManager.clearSavedLogin()
     }
 
     @Test
-    fun ensureInitialState_createsSeedAccounts() {
+    fun `Initial state seeds default users and admin balance`() {
+        // Проверяем, что сидовые пользователи созданы и баланс admin выставлен корректно.
         assertTrue(preferencesManager.userExists("admin"))
         assertTrue(preferencesManager.userExists("nick"))
         assertTrue(preferencesManager.userExists("lisa"))
@@ -37,10 +40,9 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun saveUser_andClearSavedLogin_workAsExpected() {
+    fun `Saving user persists username and clear removes it`() {
         val user = User("nick", "unsafe-pass", "dev-token")
         preferencesManager.saveUser(user)
-
         assertEquals("nick", preferencesManager.getStoredUsername())
 
         preferencesManager.clearSavedLogin()
@@ -48,16 +50,17 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun transferBetweenAccounts_validTransfer_updatesBothBalances() {
+    fun `Valid transfer updates sender and recipient balances`() {
         val result = preferencesManager.transferBetweenAccounts("admin", "nick", 250.0)
 
+        // Успешный перевод возвращает непустой результат и обновляет оба баланса.
         assertNotNull(result)
         assertEquals(750.0, preferencesManager.getBalanceForUser("admin"), 0.0)
         assertEquals(250.0, preferencesManager.getBalanceForUser("nick"), 0.0)
     }
 
     @Test
-    fun transferBetweenAccounts_invalidTransfer_returnsNullAndPreservesBalances() {
+    fun `Invalid transfer keeps balances unchanged and returns null`() {
         val result = preferencesManager.transferBetweenAccounts("admin", "nick", -10.0)
 
         assertNull(result)
@@ -66,31 +69,32 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun transactions_arePrependedInReverseChronologicalOrder() {
+    fun `Transactions list keeps newest entries first`() {
         preferencesManager.addTransactionEntry("A", "2026-01-01", "-10")
         preferencesManager.addTransactionEntry("B", "2026-01-02", "+10")
 
+        // Новая запись должна добавляться в начало списка.
         assertEquals(listOf("B|2026-01-02|+10", "A|2026-01-01|-10"), preferencesManager.getTransactions())
     }
 
     @Test
-    fun selectedLanguageTag_roundTrips() {
+    fun `Selected language tag round-trips through preferences`() {
         preferencesManager.setSelectedLanguageTag("ru")
 
         assertEquals("ru", preferencesManager.getSelectedLanguageTag())
     }
 
     @Test
-    fun wrapContextWithLocale_appliesGivenLocale() {
+    fun `Locale wrapper applies requested language to context`() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
-
         val wrapped = LocaleUtils.wrapContextWithLocale(context, "ru")
 
         assertEquals("ru", wrapped.resources.configuration.locales[0].language)
     }
 
     @Test
-    fun vulnerabilityList_containsExpectedEntries() {
+    fun `Security vulnerability list and hardcoded constants are present`() {
+        // smoke-check: список уязвимостей и ключевые константы не пустые.
         assertTrue(SecurityVulnerabilities.vulnerabilityList.isNotEmpty())
         assertFalse(SecurityVulnerabilities.HARDCODED_USERNAME.isBlank())
         assertFalse(SecurityVulnerabilities.HARDCODED_PASSWORD.isBlank())
