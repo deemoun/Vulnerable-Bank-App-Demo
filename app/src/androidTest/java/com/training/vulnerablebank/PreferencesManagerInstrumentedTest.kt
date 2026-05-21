@@ -31,7 +31,7 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun `Initial state seeds default users and admin balance`() {
+    fun initialStateSeedsDefaultUsersAndAdminBalance() {
         // Проверяем, что сидовые пользователи созданы и баланс admin выставлен корректно.
         assertTrue(preferencesManager.userExists("admin"))
         assertTrue(preferencesManager.userExists("nick"))
@@ -40,7 +40,7 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun `Saving user persists username and clear removes it`() {
+    fun savingUserPersistsUsernameAndClearRemovesIt() {
         val user = User("nick", "unsafe-pass", "dev-token")
         preferencesManager.saveUser(user)
         assertEquals("nick", preferencesManager.getStoredUsername())
@@ -50,7 +50,7 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun `Valid transfer updates sender and recipient balances`() {
+    fun validTransferUpdatesSenderAndRecipientBalances() {
         val result = preferencesManager.transferBetweenAccounts("admin", "nick", 250.0)
 
         // Успешный перевод возвращает непустой результат и обновляет оба баланса.
@@ -60,7 +60,7 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun `Invalid transfer keeps balances unchanged and returns null`() {
+    fun invalidTransferKeepsBalancesUnchangedAndReturnsNull() {
         val result = preferencesManager.transferBetweenAccounts("admin", "nick", -10.0)
 
         assertNull(result)
@@ -69,7 +69,7 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun `Transactions list keeps newest entries first`() {
+    fun transactionsListKeepsNewestEntriesFirst() {
         preferencesManager.addTransactionEntry("A", "2026-01-01", "-10")
         preferencesManager.addTransactionEntry("B", "2026-01-02", "+10")
 
@@ -78,14 +78,14 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun `Selected language tag round-trips through preferences`() {
+    fun selectedLanguageTagRoundTripsThroughPreferences() {
         preferencesManager.setSelectedLanguageTag("ru")
 
         assertEquals("ru", preferencesManager.getSelectedLanguageTag())
     }
 
     @Test
-    fun `Locale wrapper applies requested language to context`() {
+    fun localeWrapperAppliesRequestedLanguageToContext() {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
         val wrapped = LocaleUtils.wrapContextWithLocale(context, "ru")
 
@@ -93,7 +93,7 @@ class PreferencesManagerInstrumentedTest {
     }
 
     @Test
-    fun `Security vulnerability list and hardcoded constants are present`() {
+    fun securityVulnerabilityListAndHardcodedConstantsArePresent() {
         // smoke-check: список уязвимостей и ключевые константы не пустые.
         assertTrue(SecurityVulnerabilities.vulnerabilityList.isNotEmpty())
         assertFalse(SecurityVulnerabilities.HARDCODED_USERNAME.isBlank())
