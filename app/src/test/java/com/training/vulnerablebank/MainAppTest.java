@@ -135,6 +135,21 @@ public class MainAppTest extends TestBase {
         assertEquals("Settings", settingsPage.getScreenHeadingText());
     }
 
+    @DisplayName("Пользователь может запустить сетевую проверку из настроек")
+    @Test
+    public void runNetworkConnectionTestFromSettings() {
+        loginPage.loginAsAdminAndWaitForDashboard();
+        dashboardPage.openSettings();
+
+        assertTrue(settingsPage.isNetworkConnectionTestButtonVisible());
+        settingsPage.clickNetworkConnectionTestButton();
+
+        String toastText = settingsPage.waitForNetworkTestToastText();
+        assertTrue(toastText.contains("Network test successful")
+                || toastText.contains("Сетевая проверка успешна"));
+    }
+
+
     @DisplayName("Пользователь может выйти и снова войти")
     @Test
     public void logoutAndLoginAgain() {

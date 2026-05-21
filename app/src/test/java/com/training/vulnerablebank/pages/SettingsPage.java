@@ -1,7 +1,11 @@
 package com.training.vulnerablebank.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
@@ -57,6 +61,22 @@ public class SettingsPage extends BasePage {
 
     public String getNetworkConnectionTestButtonText() {
         return findVisible(networkConnectionTestButton).getText();
+    }
+
+    public String waitForNetworkTestToastText() {
+        WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        WebElement toast = shortWait.until(
+                ExpectedConditions.presenceOfElementLocated(AppiumBy.xpath("//android.widget.Toast[1]"))
+        );
+
+        String text = toast.getAttribute("text");
+        if (text == null || text.isBlank()) {
+            text = toast.getText();
+        }
+        if (text == null || text.isBlank()) {
+            text = toast.getAttribute("name");
+        }
+        return text == null ? "" : text;
     }
 
     public boolean isLogoutButtonVisible() {
