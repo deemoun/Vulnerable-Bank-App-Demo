@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
+import io.qameta.allure.Step;
 
 public class LoginPage extends BasePage {
 
@@ -17,10 +18,12 @@ public class LoginPage extends BasePage {
         super(driver, wait);
     }
 
+    @Step("Login as admin and wait for dashboard")
     public void loginAsAdminAndWaitForDashboard() {
         loginAsUserAndWaitForDashboard("admin", "password123");
     }
 
+    @Step("Login as user: {username}")
     public void loginAsUserAndWaitForDashboard(String username, String password) {
         if (isElementVisible(dashboardButton, 2)) {
             return;
@@ -47,6 +50,7 @@ public class LoginPage extends BasePage {
         throw new IllegalStateException("Не удалось попасть на Login или Dashboard screen");
     }
 
+    @Step("Fill credentials and tap Login")
     private void performLogin(String username, String password) {
         enterText(usernameField, username);
         enterText(passwordField, password);

@@ -4,17 +4,29 @@ import static com.training.vulnerablebank.utils.TestAssertions.assertTextEqualsA
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+@Epic("VulnerableBank Mobile App")
+@Feature("Core user flows")
 public class MainAppTest extends TestBase {
 
     @DisplayName("Пользователь может войти в приложение")
+    @Owner("qa")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
     public void loginAndOpenTransactions() {
+        Allure.step("Login as admin user");
         loginPage.loginAsAdminAndWaitForDashboard();
+        Allure.step("Open transactions and validate heading");
         assertTrue(dashboardPage.isTransactionsButtonVisible(), "Отсутствует кнопка перехода к транзакциям на дашборде");
         dashboardPage.openTransactions();
         assertTrue(transactionsPage.isBackToDashboardButtonVisible(), "Отсутствует кнопка возврата на дашборд на экране транзакций");
@@ -26,11 +38,15 @@ public class MainAppTest extends TestBase {
     }
 
     @DisplayName("Пользователь может сделать перевод пользователю lisa")
+    @Owner("qa")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
     public void loginAndTransferToLisa() {
+        Allure.step("Login and open transfer screen");
         loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
 
+        Allure.step("Submit transfer and validate success message");
         dashboardPage.clickTransferButton();
         transferPage.enterLisaTextInRecipientField();
         transferPage.enterAmountTextInAmountField();
