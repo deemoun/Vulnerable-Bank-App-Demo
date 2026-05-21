@@ -23,6 +23,10 @@ public class TransferPage extends BasePage {
         enterText(recipientField, "lisa");
     }
 
+    public void enterRecipient(String recipient) {
+        enterText(recipientField, recipient);
+    }
+
     public void enterAmountTextInAmountField() {
         enterText(amountField, "50.0");
     }
@@ -43,4 +47,3 @@ public class TransferPage extends BasePage {
         click(backToDashboardButton);
     }
 }
-
