@@ -81,6 +81,12 @@ public class TestBase {
                 .setAppActivity(APP_ACTIVITY)
                 .setNoReset(false);
 
+        // Example for local APK launch (keep disabled):
+        // UiAutomator2Options localApkOptions = new UiAutomator2Options()
+        //         .setPlatformName("Android")
+        //         .setAutomationName("UiAutomator2")
+        //         .setApp("/absolute/path/to/your/app-debug.apk");
+
         String appPath = getAppPath();
 
         if (appPath != null && !appPath.isBlank()) {
