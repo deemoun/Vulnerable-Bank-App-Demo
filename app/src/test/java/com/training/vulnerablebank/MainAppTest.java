@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +22,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class MainAppTest extends TestBase {
 
     @DisplayName("Пользователь может войти в приложение")
+    @Description("Проверка логина admin и перехода в раздел транзакций из дашборда.")
+    @Story("Login")
     @Owner("qa")
     @Severity(SeverityLevel.CRITICAL)
     @Test
@@ -38,6 +42,8 @@ public class MainAppTest extends TestBase {
     }
 
     @DisplayName("Пользователь может сделать перевод пользователю lisa")
+    @Description("Проверка перевода с дашборда: admin отправляет сумму пользователю lisa и получает подтверждение.")
+    @Story("Transfer")
     @Owner("qa")
     @Severity(SeverityLevel.CRITICAL)
     @Test
@@ -61,6 +67,8 @@ public class MainAppTest extends TestBase {
 
     @ParameterizedTest
     @ValueSource(strings = {"50.0", "100.0", "500.0"})
+    @Description("Проверка переводов с разными суммами и валидацией успешного завершения операции.")
+    @Story("Transfer")
     public void loginAndMakeTransferWithDifferentAmounts(String amount) {
         loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
@@ -79,6 +87,8 @@ public class MainAppTest extends TestBase {
     }
 
     @DisplayName("Пользователь может сделать перевод")
+    @Description("Базовая проверка перевода после логина admin.")
+    @Story("Transfer")
     @Test
     public void loginAndMakeTransfer() {
         loginPage.loginAsAdminAndWaitForDashboard();
@@ -95,6 +105,8 @@ public class MainAppTest extends TestBase {
     }
 
     @DisplayName("Пользователь может переключить язык на русский")
+    @Description("Проверка изменения языка интерфейса в настройках на русский.")
+    @Story("Settings")
     @Test
     public void switchLanguageToRussianFromSettings() {
         loginPage.loginAsAdminAndWaitForDashboard();
@@ -107,6 +119,8 @@ public class MainAppTest extends TestBase {
     }
 
     @DisplayName("Пользователь может открыть настройки")
+    @Description("Проверка доступности основных действий на экране настроек.")
+    @Story("Settings")
     @Test
     public void loginAndOpenSettings(){
         loginPage.loginAsAdminAndWaitForDashboard();
@@ -125,6 +139,8 @@ public class MainAppTest extends TestBase {
 
 
     @DisplayName("Пользователь может вернуться в дашборд из настроек")
+    @Description("Проверка возврата на дашборд через кнопку назад в настройках.")
+    @Story("Dashboard")
     @Test
     public void openSettingsAndReturnToDashboard() {
         loginPage.loginAsAdminAndWaitForDashboard();
@@ -137,6 +153,8 @@ public class MainAppTest extends TestBase {
     }
 
     @DisplayName("Пользователь может переключить язык обратно на английский")
+    @Description("Проверка переключения языка в обе стороны: русский -> английский.")
+    @Story("Settings")
     @Test
     public void switchLanguageBackToEnglishFromSettings() {
         loginPage.loginAsAdminAndWaitForDashboard();
@@ -152,6 +170,8 @@ public class MainAppTest extends TestBase {
     }
 
     @DisplayName("Пользователь может запустить сетевую проверку из настроек")
+    @Description("Проверка запуска встроенной сетевой диагностики и получения результата.")
+    @Story("Settings")
     @Test
     public void runNetworkConnectionTestFromSettings() {
         loginPage.loginAsAdminAndWaitForDashboard();
@@ -168,6 +188,8 @@ public class MainAppTest extends TestBase {
 
 
     @DisplayName("Пользователь может выйти и снова войти")
+    @Description("Проверка сценария logout/login для текущего пользователя.")
+    @Story("Login")
     @Test
     public void logoutAndLoginAgain() {
         loginPage.loginAsAdminAndWaitForDashboard();
@@ -180,6 +202,8 @@ public class MainAppTest extends TestBase {
 
 
     @DisplayName("Admin переводит 100$ пользователю lisa, и баланс lisa увеличивается на 100$")
+    @Description("Сквозной сценарий: перевод от admin пользователю lisa и проверка изменения баланса после перелогина.")
+    @Story("Dashboard")
     @Test
     public void adminTransfer100ToLisaAndCheckLisaBalance() {
         loginPage.loginAsAdminAndWaitForDashboard();
@@ -212,6 +236,8 @@ public class MainAppTest extends TestBase {
     }
 
     @DisplayName("Пользователь lisa может войти в приложение")
+    @Description("Проверка логина пользователя lisa и отображения ключевого контента дашборда.")
+    @Story("Login")
     @Test
     public void loginAsLisaAndOpenDashboard() {
         loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
