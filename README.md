@@ -32,7 +32,7 @@ From project root:
 - JUnit 5 platform is enabled for `Test` tasks (`useJUnitPlatform()`), so Allure JUnit 5 integration can collect test lifecycle data.
 
 ### 4.2 What is **not** configured automatically
-- There is no dedicated Gradle task like `allureReport`/`allureServe` in this repo.
+- A compatibility Gradle task `allureReport` is available at the root project and expects results in `app/build/allure-results`.
 - There is no committed `allure.properties` with custom output directory.
 - CI workflows currently publish JUnit/Android reports, but do not generate/publish Allure reports.
 
