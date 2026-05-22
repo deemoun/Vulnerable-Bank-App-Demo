@@ -71,7 +71,8 @@ private fun TransactionsScreen(
         modifier = Modifier
             .fillMaxSize()
             .systemBarsPadding()
-            .padding(24.dp),
+            .padding(24.dp)
+            .semantics { contentDescription = "transactions_list" },
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         ScreenHeader(
@@ -88,7 +89,7 @@ private fun TransactionsScreen(
             )
         } else {
             LazyColumn(
-                modifier = Modifier.semantics { contentDescription = "transactions_list" },
+                modifier = Modifier,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(transactions.size) { index ->
