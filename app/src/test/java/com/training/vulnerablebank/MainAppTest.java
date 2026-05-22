@@ -12,6 +12,7 @@ import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -282,5 +283,42 @@ public class MainAppTest extends TestBase {
         dashboardPage.openSettings();
         settingsPage.clickClearAllDataButton();
         assertTrue(loginPage.isLoginButtonVisible(), "После очистки данных должна быть видна кнопка входа");
+    }
+
+    @DisplayName("Admin делает 2 перевода nick (500 и 50), а nick видит записи в Recent Transactions")
+    @Description("Сквозной сценарий: admin отправляет nick 500 и 50, после чего nick проверяет обе записи в истории транзакций.")
+    @Story("Transactions")
+    @Test
+    public void adminTransfers500And50ToNickAndNickChecksTransactions() {
+        loginPage.loginAsAdminAndWaitForDashboard();
+
+        dashboardPage.clickTransferButton();
+        transferPage.enterRecipient("nick");
+        transferPage.enterAmount("500");
+        transferPage.clickSubmitTransferButton();
+        assertTextEqualsAny(transferPage.getTransferSuccessToastText(), "Transfer completed", "Перевод выполнен");
+        transferPage.clickBackToDashboardButton();
+
+        dashboardPage.clickTransferButton();
+        transferPage.enterRecipient("nick");
+        transferPage.enterAmount("50");
+        transferPage.clickSubmitTransferButton();
+        assertTextEqualsAny(transferPage.getTransferSuccessToastText(), "Transfer completed", "Перевод выполнен");
+        transferPage.clickBackToDashboardButton();
+
+        dashboardPage.openSettings();
+        settingsPage.clickLogoutButton();
+        loginPage.loginAsUserAndWaitForDashboard("nick", "nick123");
+
+        dashboardPage.openTransactions();
+        assertTrue(transactionsPage.isTransactionsListVisible(), "Список транзакций должен отображаться");
+
+        String today = LocalDate.now().toString();
+        assertEquals("Transfer from admin to nick", transactionsPage.getTransactionTitleByIndex(0));
+        assertEquals("-$50.00", transactionsPage.getTransactionAmountByIndex(0));
+        assertEquals(today, transactionsPage.getTransactionDateByIndex(0));
+        assertEquals("Transfer from admin to nick", transactionsPage.getTransactionTitleByIndex(1));
+        assertEquals("-$500.00", transactionsPage.getTransactionAmountByIndex(1));
+        assertEquals(today, transactionsPage.getTransactionDateByIndex(1));
     }
 }
