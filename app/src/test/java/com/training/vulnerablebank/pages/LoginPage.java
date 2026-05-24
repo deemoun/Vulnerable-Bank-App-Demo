@@ -47,7 +47,7 @@ public class LoginPage extends BasePage {
             return;
         }
 
-        throw new IllegalStateException("Не удалось попасть на Login или Dashboard screen");
+        throw new IllegalStateException("Could not reach Login or Dashboard screen");
     }
 
     @Step("Fill credentials and tap Login")

@@ -22,8 +22,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 @Feature("Core user flows")
 public class MainAppTest extends TestBase {
 
-    @DisplayName("Пользователь может войти в приложение")
-    @Description("Проверка логина admin и перехода в раздел транзакций из дашборда.")
+    @DisplayName("User can log into the app")
+    @Description("Verifies admin login and navigation to the transactions screen from the dashboard.")
     @Story("Login")
     @Owner("qa")
     @Severity(SeverityLevel.CRITICAL)
@@ -32,9 +32,9 @@ public class MainAppTest extends TestBase {
         Allure.step("Login as admin user");
         loginPage.loginAsAdminAndWaitForDashboard();
         Allure.step("Open transactions and validate heading");
-        assertTrue(dashboardPage.isTransactionsButtonVisible(), "Отсутствует кнопка перехода к транзакциям на дашборде");
+        assertTrue(dashboardPage.isTransactionsButtonVisible(), "Transactions navigation button is missing on the dashboard");
         dashboardPage.openTransactions();
-        assertTrue(transactionsPage.isBackToDashboardButtonVisible(), "Отсутствует кнопка возврата на дашборд на экране транзакций");
+        assertTrue(transactionsPage.isBackToDashboardButtonVisible(), "Back-to-dashboard button is missing on the transactions screen");
         assertTextEqualsAny(
                 transactionsPage.getScreenHeadingText(),
                 "Recent Transactions",
@@ -42,8 +42,8 @@ public class MainAppTest extends TestBase {
         );
     }
 
-    @DisplayName("Пользователь может сделать перевод пользователю lisa")
-    @Description("Проверка перевода с дашборда: admin отправляет сумму пользователю lisa и получает подтверждение.")
+    @DisplayName("User can transfer money to lisa")
+    @Description("Verifies transfer from dashboard: admin sends an amount to lisa and receives confirmation.")
     @Story("Transfer")
     @Owner("qa")
     @Severity(SeverityLevel.CRITICAL)
@@ -51,7 +51,7 @@ public class MainAppTest extends TestBase {
     public void loginAndTransferToLisa() {
         Allure.step("Login and open transfer screen");
         loginPage.loginAsAdminAndWaitForDashboard();
-        assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
+        assertTrue(dashboardPage.isTransferButtonVisible(), "Transfer button is missing on the dashboard");
 
         Allure.step("Submit transfer and validate success message");
         dashboardPage.clickTransferButton();
@@ -68,11 +68,11 @@ public class MainAppTest extends TestBase {
 
     @ParameterizedTest
     @ValueSource(strings = {"50.0", "100.0", "500.0"})
-    @Description("Проверка переводов с разными суммами и валидацией успешного завершения операции.")
+    @Description("Verifies transfers with different amounts and successful completion validation.")
     @Story("Transfer")
     public void loginAndMakeTransferWithDifferentAmounts(String amount) {
         loginPage.loginAsAdminAndWaitForDashboard();
-        assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
+        assertTrue(dashboardPage.isTransferButtonVisible(), "Transfer button is missing on the dashboard");
 
         dashboardPage.clickTransferButton();
 
@@ -87,13 +87,13 @@ public class MainAppTest extends TestBase {
         );
     }
 
-    @DisplayName("Пользователь может сделать перевод")
-    @Description("Базовая проверка перевода после логина admin.")
+    @DisplayName("User can make a transfer")
+    @Description("Basic transfer check after admin login.")
     @Story("Transfer")
     @Test
     public void loginAndMakeTransfer() {
         loginPage.loginAsAdminAndWaitForDashboard();
-        assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
+        assertTrue(dashboardPage.isTransferButtonVisible(), "Transfer button is missing on the dashboard");
         dashboardPage.clickTransferButton();
         transferPage.enterLisaTextInRecipientField();
         transferPage.enterAmountTextInAmountField();
@@ -105,13 +105,13 @@ public class MainAppTest extends TestBase {
         );
     }
 
-    @DisplayName("Пользователь не может сделать перевод несуществующему получателю")
-    @Description("Негативная проверка: перевод на несуществующего адресата должен завершиться ошибкой валидации.")
+    @DisplayName("User cannot transfer to a non-existing recipient")
+    @Description("Negative check: transfer to a non-existing recipient should fail with a validation error.")
     @Story("Transfer")
     @Test
     public void loginAndFailTransferToUnknownRecipient() {
         loginPage.loginAsAdminAndWaitForDashboard();
-        assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
+        assertTrue(dashboardPage.isTransferButtonVisible(), "Transfer button is missing on the dashboard");
 
         dashboardPage.clickTransferButton();
         transferPage.enterRecipient("ghost-user");
@@ -125,32 +125,32 @@ public class MainAppTest extends TestBase {
         );
     }
 
-    @DisplayName("Пользователь может переключить язык на русский")
-    @Description("Проверка изменения языка интерфейса в настройках на русский.")
+    @DisplayName("User can switch language to Russian")
+    @Description("Verifies changing app language to Russian from Settings.")
     @Story("Settings")
     @Test
     public void switchLanguageToRussianFromSettings() {
         loginPage.loginAsAdminAndWaitForDashboard();
         dashboardPage.openSettings();
 
-        assertTrue(settingsPage.isRussianLanguageButtonVisible(), "Отсутствует кнопка переключения на русский язык");
+        assertTrue(settingsPage.isRussianLanguageButtonVisible(), "Russian language switch button is missing");
         settingsPage.clickRussianLanguageButton();
 
-        assertEquals("Настройки", settingsPage.getScreenHeadingText(), "Заголовок экрана должен быть «Настройки» после переключения на русский");
+        assertEquals("Настройки", settingsPage.getScreenHeadingText(), "Screen heading should be \"Настройки\" after switching to Russian");
     }
 
-    @DisplayName("Пользователь может открыть настройки")
-    @Description("Проверка доступности основных действий на экране настроек.")
+    @DisplayName("User can open settings")
+    @Description("Verifies availability of core actions on the settings screen.")
     @Story("Settings")
     @Test
     public void loginAndOpenSettings(){
         loginPage.loginAsAdminAndWaitForDashboard();
-        assertTrue(dashboardPage.isSettingsButtonVisible(), "Отсутствует кнопка настроек на дашборде");
+        assertTrue(dashboardPage.isSettingsButtonVisible(), "Settings button is missing on the dashboard");
         dashboardPage.openSettings();
-        assertTrue(settingsPage.isBackToDashboardButtonVisible(), "Отсутствует кнопка «Назад» (возврат на дашборд) в настройках");
-        assertTrue(settingsPage.isClearAllDataButtonVisible(), "Отсутствует кнопка очистки данных в настройках");
-        assertTrue(settingsPage.isNetworkConnectionTestButtonVisible(), "Отсутствует кнопка проверки сети в настройках");
-        assertTrue(settingsPage.isLogoutButtonVisible(), "Отсутствует кнопка выхода из аккаунта в настройках");
+        assertTrue(settingsPage.isBackToDashboardButtonVisible(), "Back button (return to dashboard) is missing in settings");
+        assertTrue(settingsPage.isClearAllDataButtonVisible(), "Clear data button is missing in settings");
+        assertTrue(settingsPage.isNetworkConnectionTestButtonVisible(), "Network test button is missing in settings");
+        assertTrue(settingsPage.isLogoutButtonVisible(), "Logout button is missing in settings");
         assertTextEqualsAny(
                 settingsPage.getScreenHeadingText(),
                 "Settings",
@@ -159,57 +159,57 @@ public class MainAppTest extends TestBase {
     }
 
 
-    @DisplayName("Пользователь может вернуться в дашборд из настроек")
-    @Description("Проверка возврата на дашборд через кнопку назад в настройках.")
+    @DisplayName("User can return to dashboard from settings")
+    @Description("Verifies returning to dashboard through the back button in settings.")
     @Story("Dashboard")
     @Test
     public void openSettingsAndReturnToDashboard() {
         loginPage.loginAsAdminAndWaitForDashboard();
         dashboardPage.openSettings();
 
-        assertTrue(settingsPage.isBackToDashboardButtonVisible(), "Отсутствует кнопка «Назад» (возврат на дашборд) в настройках");
+        assertTrue(settingsPage.isBackToDashboardButtonVisible(), "Back button (return to dashboard) is missing in settings");
         settingsPage.clickBackToDashboardButton();
 
-        assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
+        assertTrue(dashboardPage.isTransferButtonVisible(), "Transfer button is missing on the dashboard");
     }
 
-    @DisplayName("Пользователь может переключить язык обратно на английский")
-    @Description("Проверка переключения языка в обе стороны: русский -> английский.")
+    @DisplayName("User can switch language back to English")
+    @Description("Verifies language switching both ways: Russian -> English.")
     @Story("Settings")
     @Test
     public void switchLanguageBackToEnglishFromSettings() {
         loginPage.loginAsAdminAndWaitForDashboard();
         dashboardPage.openSettings();
 
-        assertTrue(settingsPage.isRussianLanguageButtonVisible(), "Отсутствует кнопка переключения на русский язык");
+        assertTrue(settingsPage.isRussianLanguageButtonVisible(), "Russian language switch button is missing");
         settingsPage.clickRussianLanguageButton();
-        assertEquals("Настройки", settingsPage.getScreenHeadingText(), "Заголовок экрана должен быть «Настройки» после переключения на русский");
+        assertEquals("Настройки", settingsPage.getScreenHeadingText(), "Screen heading should be \"Настройки\" after switching to Russian");
 
-        assertTrue(settingsPage.isEnglishLanguageButtonVisible(), "Отсутствует кнопка переключения на английский язык");
+        assertTrue(settingsPage.isEnglishLanguageButtonVisible(), "English language switch button is missing");
         settingsPage.clickEnglishLanguageButton();
-        assertEquals("Settings", settingsPage.getScreenHeadingText(), "Заголовок экрана должен быть Settings после переключения на английский");
+        assertEquals("Settings", settingsPage.getScreenHeadingText(), "Screen heading should be Settings after switching to English");
     }
 
-    @DisplayName("Пользователь может запустить сетевую проверку из настроек")
-    @Description("Проверка запуска встроенной сетевой диагностики и получения результата.")
+    @DisplayName("User can run network test from settings")
+    @Description("Verifies running built-in network diagnostics and receiving a result.")
     @Story("Settings")
     @Test
     public void runNetworkConnectionTestFromSettings() {
         loginPage.loginAsAdminAndWaitForDashboard();
         dashboardPage.openSettings();
 
-        assertTrue(settingsPage.isNetworkConnectionTestButtonVisible(), "Отсутствует кнопка проверки сети в настройках");
+        assertTrue(settingsPage.isNetworkConnectionTestButtonVisible(), "Network test button is missing in settings");
         settingsPage.clickNetworkConnectionTestButton();
 
         String toastText = settingsPage.waitForNetworkTestToastText();
         assertTrue(toastText.contains("Network test successful")
                 || toastText.contains("Сетевая проверка успешна"),
-                "Тост с результатом сетевой проверки не появился или содержит неожиданный текст: " + toastText);
+                "Network test result toast did not appear or has unexpected text: " + toastText);
     }
 
 
-    @DisplayName("Пользователь может выйти и снова войти")
-    @Description("Проверка сценария logout/login для текущего пользователя.")
+    @DisplayName("User can log out and log in again")
+    @Description("Verifies logout/login flow for current user.")
     @Story("Login")
     @Test
     public void logoutAndLoginAgain() {
@@ -218,12 +218,12 @@ public class MainAppTest extends TestBase {
         settingsPage.clickLogoutButton();
 
         loginPage.loginAsAdminAndWaitForDashboard();
-        assertTrue(dashboardPage.isTransferButtonVisible(), "Отсутствует кнопка перевода на дашборде");
+        assertTrue(dashboardPage.isTransferButtonVisible(), "Transfer button is missing on the dashboard");
     }
 
 
-    @DisplayName("Admin переводит 100$ пользователю lisa, и баланс lisa увеличивается на 100$")
-    @Description("Сквозной сценарий: перевод от admin пользователю lisa и проверка изменения баланса после перелогина.")
+    @DisplayName("Admin transfers $100 to lisa and lisa balance increases by $100")
+    @Description("End-to-end scenario: transfer from admin to lisa and verify balance change after re-login.")
     @Story("Dashboard")
     @Test
     public void adminTransfer100ToLisaAndCheckLisaBalance() {
@@ -231,7 +231,7 @@ public class MainAppTest extends TestBase {
         loginPage.loginAsAdminAndWaitForDashboard();
         assertTrue(dashboardPage.getBalanceAmountText().contains("1,000")
                         || dashboardPage.getBalanceAmountText().contains("1000"),
-                "У admin перед переводом должен отображаться баланс 1000");
+                "Admin should have balance 1000 before transfer");
 
         Allure.step("Transfer 100$ from admin to lisa");
         dashboardPage.clickTransferButton();
@@ -250,43 +250,43 @@ public class MainAppTest extends TestBase {
         transferPage.clickBackToDashboardButton();
         dashboardPage.openSettings();
         settingsPage.clickLogoutButton();
-        assertTrue(loginPage.isLoginButtonVisible(), "После выхода должна быть видна кнопка входа");
+        assertTrue(loginPage.isLoginButtonVisible(), "Login button should be visible after logout");
 
         Allure.step("Login as lisa and verify updated balance");
         loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
         String expectedBalance = "100.0";
         String actualBalance = dashboardPage.getBalanceAmountText();
         assertEquals(expectedBalance, actualBalance,
-                "После перевода у lisa должен быть ожидаемый баланс");
+                "Lisa should have the expected balance after transfer");
     }
 
-    @DisplayName("Пользователь lisa может войти в приложение")
-    @Description("Проверка логина пользователя lisa и отображения ключевого контента дашборда.")
+    @DisplayName("User lisa can log into the app")
+    @Description("Verifies login for user lisa and key dashboard content visibility.")
     @Story("Login")
     @Test
     public void loginAsLisaAndOpenDashboard() {
         loginPage.loginAsUserAndWaitForDashboard("lisa", "testing123");
-        assertTrue(dashboardPage.isTransactionsButtonVisible(), "Отсутствует кнопка перехода к транзакциям на дашборде");
+        assertTrue(dashboardPage.isTransactionsButtonVisible(), "Transactions navigation button is missing on the dashboard");
     }
 
-    @DisplayName("Пользователь john может войти и видеть баланс 500$")
+    @DisplayName("User john can log in and see $500 balance")
     @Test
     public void loginAsJohnAndCheckBalance() {
         loginPage.loginAsUserAndWaitForDashboard("john", "testing123");
-        assertTrue(dashboardPage.getBalanceAmountText().contains("500"), "У john должен отображаться баланс 500");
+        assertTrue(dashboardPage.getBalanceAmountText().contains("500"), "John should see balance 500");
     }
 
-    @DisplayName("Можно очистить данные приложения")
+    @DisplayName("App data can be cleared")
     @Test
     public void openSettingsAndChangeLanguage(){
         loginPage.loginAsAdminAndWaitForDashboard();
         dashboardPage.openSettings();
         settingsPage.clickClearAllDataButton();
-        assertTrue(loginPage.isLoginButtonVisible(), "После очистки данных должна быть видна кнопка входа");
+        assertTrue(loginPage.isLoginButtonVisible(), "Login button should be visible after clearing app data");
     }
 
-    @DisplayName("Admin делает 2 перевода nick (500 и 50), а nick видит записи в Recent Transactions")
-    @Description("Сквозной сценарий: admin отправляет nick 500 и 50, после чего nick проверяет обе записи в истории транзакций.")
+    @DisplayName("Admin makes 2 transfers to nick (500 and 50), and nick sees entries in Recent Transactions")
+    @Description("End-to-end scenario: admin sends nick 500 and 50, then nick verifies both entries in transaction history.")
     @Story("Transactions")
     @Test
     public void adminTransfers500And50ToNickAndNickChecksTransactions() {
@@ -311,7 +311,7 @@ public class MainAppTest extends TestBase {
         loginPage.loginAsUserAndWaitForDashboard("nick", "nick123");
 
         dashboardPage.openTransactions();
-        assertTrue(transactionsPage.isTransactionsListVisible(), "Список транзакций должен отображаться");
+        assertTrue(transactionsPage.isTransactionsListVisible(), "Transactions list should be visible");
 
         String today = LocalDate.now().toString();
         assertEquals("Transfer from admin to nick", transactionsPage.getTransactionTitleByIndex(0));
