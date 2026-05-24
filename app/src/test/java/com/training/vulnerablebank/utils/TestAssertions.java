@@ -17,7 +17,7 @@ public class TestAssertions {
 
         assertTrue(
                 textIsCorrect,
-                "Текст не совпал ни с одним ожидаемым значением. actual='" + actualText
+                "Text did not match any expected value. actual='" + actualText
                         + "', expectedAny=['" + expectedText1 + "', '" + expectedText2 + "']"
         );
     }
