@@ -25,14 +25,14 @@ class PreferencesManagerInstrumentedTest {
         val context = ApplicationProvider.getApplicationContext<android.content.Context>()
         preferencesManager = PreferencesManager(context)
 
-        // Изолируем тесты: всегда стартуем с базовых данных и чистой сессии.
+        // Isolate tests: always start from seeded data and a clean session.
         preferencesManager.resetToInitialState()
         preferencesManager.clearSavedLogin()
     }
 
     @Test
     fun initialStateSeedsDefaultUsersAndAdminBalance() {
-        // Проверяем, что сидовые пользователи созданы и баланс admin выставлен корректно.
+        // Verify seeded users exist and admin balance is initialized correctly.
         assertTrue(preferencesManager.userExists("admin"))
         assertTrue(preferencesManager.userExists("nick"))
         assertTrue(preferencesManager.userExists("lisa"))
@@ -53,7 +53,7 @@ class PreferencesManagerInstrumentedTest {
     fun validTransferUpdatesSenderAndRecipientBalances() {
         val result = preferencesManager.transferBetweenAccounts("admin", "nick", 250.0)
 
-        // Успешный перевод возвращает непустой результат и обновляет оба баланса.
+        // A successful transfer returns a non-null result and updates both balances.
         assertNotNull(result)
         assertEquals(750.0, preferencesManager.getBalanceForUser("admin"), 0.0)
         assertEquals(250.0, preferencesManager.getBalanceForUser("nick"), 0.0)
@@ -73,7 +73,7 @@ class PreferencesManagerInstrumentedTest {
         preferencesManager.addTransactionEntry("A", "2026-01-01", "-10")
         preferencesManager.addTransactionEntry("B", "2026-01-02", "+10")
 
-        // Новая запись должна добавляться в начало списка.
+        // New entries should be inserted at the start of the list.
         assertEquals(listOf("B|2026-01-02|+10", "A|2026-01-01|-10"), preferencesManager.getTransactions())
     }
 
@@ -94,7 +94,7 @@ class PreferencesManagerInstrumentedTest {
 
     @Test
     fun securityVulnerabilityListAndHardcodedConstantsArePresent() {
-        // smoke-check: список уязвимостей и ключевые константы не пустые.
+        // Smoke-check: vulnerability list and key constants are not empty.
         assertTrue(SecurityVulnerabilities.vulnerabilityList.isNotEmpty())
         assertFalse(SecurityVulnerabilities.HARDCODED_USERNAME.isBlank())
         assertFalse(SecurityVulnerabilities.HARDCODED_PASSWORD.isBlank())
