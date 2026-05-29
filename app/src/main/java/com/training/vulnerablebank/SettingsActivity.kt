@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class SettingsActivity : BaseLocalizedActivity() {
     private val networkTestInProgress = AtomicBoolean(false)
-    private val networkTestUrl = "https://httpbin.org/get"
+    private val networkTestUrl = "https://yarygintech.com/labs/ping.json"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val preferencesManager = PreferencesManager(this)
