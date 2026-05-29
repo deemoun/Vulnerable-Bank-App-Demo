@@ -1,4 +1,4 @@
-# VulnerableBankAppOOP
+# Vulnerable Bank App Demo
 
 Android/Kotlin training bank app used for engineering, QA, and security testing. The app intentionally includes vulnerable patterns for demo and education.
 
