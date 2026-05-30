@@ -10,8 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -85,7 +86,12 @@ private fun SecurityInfoScreen(onBackToDashboard: () -> Unit) {
                 )
             }
         }
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 220.dp),
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             items(SecurityVulnerabilities.vulnerabilityList) { vulnerability ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -93,7 +99,7 @@ private fun SecurityInfoScreen(onBackToDashboard: () -> Unit) {
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(14.dp),
                         verticalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         Text(
@@ -103,7 +109,7 @@ private fun SecurityInfoScreen(onBackToDashboard: () -> Unit) {
                         )
                         Text(
                             text = vulnerability.description,
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 }
