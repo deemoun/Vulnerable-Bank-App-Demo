@@ -1,0 +1,54 @@
+name: Android Production Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  production-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Run Production static checks and release build
+        run: ./gradlew --no-daemon --console=plain clean lint assembleRelease
+
+      - name: Document Production APK signing status
+        run: |
+          echo "Release signing is not configured in app/build.gradle.kts."
+          echo "The current Gradle release build produces an unsigned release APK."
+          echo "Add GitHub Actions signing secrets and a release signingConfig before using this artifact for distribution."
+
+      - name: Prepare Production release APK artifact
+        run: |
+          release_dir="app/build/outputs/apk/release"
+          if [[ -f "${release_dir}/app-release.apk" ]]; then
+            echo "Production release APK already exists at ${release_dir}/app-release.apk."
+          elif [[ -f "${release_dir}/app-release-unsigned.apk" ]]; then
+            cp "${release_dir}/app-release-unsigned.apk" "${release_dir}/app-release.apk"
+            echo "Copied unsigned release APK to ${release_dir}/app-release.apk for a stable artifact path."
+          else
+            echo "No production release APK found in ${release_dir}." >&2
+            exit 1
+          fi
+
+      - name: Upload Production release APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-production-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
