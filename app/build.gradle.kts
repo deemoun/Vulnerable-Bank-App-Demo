@@ -23,8 +23,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            resValue("string", "app_name", "Vulnerable Bank Debug")
+            buildConfigField("String", "BUILD_ENV", "\"debug\"")
+        }
+
         release {
             isMinifyEnabled = false
+            resValue("string", "app_name", "Vulnerable Bank")
+            buildConfigField("String", "BUILD_ENV", "\"production\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -37,6 +46,8 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+        resValues = true
     }
 
     testOptions {
