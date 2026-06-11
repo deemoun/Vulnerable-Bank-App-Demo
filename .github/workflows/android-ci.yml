@@ -1,9 +1,10 @@
-name: Android CI (No Emulator)
+name: Android CI Debug Validation
 
 on:
   workflow_dispatch:
+
 jobs:
-  test-without-emulator:
+  debug-validation:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,35 +18,39 @@ jobs:
           java-version: '17'
           cache: gradle
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Run static checks and unit tests (without emulator)
+      - name: Run Debug static checks and unit tests (without emulator)
         run: ./gradlew --no-daemon --console=plain --info clean lint testDebugUnitTest
 
-      - name: Publish unit test summary
+      - name: Publish Debug unit test summary
         if: always()
         uses: mikepenz/action-junit-report@v4
         with:
           report_paths: 'app/build/test-results/testDebugUnitTest/*.xml'
-          check_name: Unit Test Results (Debug)
+          check_name: Debug Unit Test Results
           detailed_summary: true
           fail_on_failure: true
 
-      - name: Upload unit test reports
+      - name: Upload Debug unit test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: unit-test-reports
+          name: debug-unit-test-reports
           path: |
             app/build/reports/tests/testDebugUnitTest
             app/build/test-results/testDebugUnitTest
 
-      - name: Build debug APK
+      - name: Build Debug APK
         run: ./gradlew --no-daemon assembleDebug
 
-      - name: Upload APK artifact
+      - name: Upload Debug APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
