@@ -2,6 +2,15 @@ name: Build Android APK
 
 on:
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: APK build type
+        required: true
+        default: debug
+        type: choice
+        options:
+          - debug
+          - production
 
 jobs:
   build-apk:
@@ -21,12 +30,14 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Build debug APK
+      - name: Build ${{ inputs.build_type }} APK
+        env:
+          BUILD_TYPE: ${{ inputs.build_type }}
         run: ./scripts/ci-build-apk.sh
 
-      - name: Upload debug APK
+      - name: Upload ${{ inputs.build_type }} APK
         uses: actions/upload-artifact@v4
         with:
-          name: vulnerable-bank-debug-apk
-          path: artifacts/app-debug.apk
+          name: vulnerable-bank-${{ inputs.build_type }}-apk
+          path: artifacts/app-${{ inputs.build_type }}.apk
           if-no-files-found: error
